@@ -1,0 +1,67 @@
+name: Claude Issue Triage
+
+on:
+  issues:
+    types: [opened, edited]
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      id-token: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Run Claude Issue Triage
+        id: claude-triage
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          claude_args: '--allowed-tools "Bash(gh label list),Bash(gh issue view *),Bash(gh issue edit *),Bash(gh issue comment *)"'
+          prompt: |
+            Analiza el issue #${{ github.event.issue.number }} del repositorio ${{ github.repository }}.
+
+            Contexto: este repo es un Tetris en JavaScript vanilla (ver CLAUDE.md para la
+            arquitectura de game.js). Este workflow se dispara cuando el issue se abre o se
+            edita.
+
+            Pasos a seguir:
+
+            1. Lee el issue completo con `gh issue view ${{ github.event.issue.number }} --repo ${{ github.repository }} --comments`
+               para ver título, cuerpo y comentarios existentes (incluidos posibles
+               diagnósticos previos tuyos).
+
+            2. LABELS: ejecuta `gh label list --repo ${{ github.repository }}` y elige
+               ÚNICAMENTE entre los labels que ya existen los que apliquen al issue.
+               NO crees labels nuevos. Aplica los que correspondan con
+               `gh issue edit ${{ github.event.issue.number }} --repo ${{ github.repository }} --add-label "<label>"`.
+               Si ninguno aplica con claridad, no fuerces ninguno. No quites labels que
+               ya estén puestos salvo que sean claramente incorrectos.
+
+            3. DIAGNÓSTICO: explora el código relevante del repositorio (game.js,
+               index.html, style.css, CLAUDE.md) para entender el problema descrito y
+               publica UN comentario en español con
+               `gh issue comment ${{ github.event.issue.number }} --repo ${{ github.repository }} --body "..."`
+               que incluya:
+               - Resumen del problema.
+               - Archivos y funciones del código afectadas (usa referencias tipo
+                 archivo:línea cuando puedas).
+               - Causa raíz probable.
+               - Enfoque sugerido para la solución, con pasos concretos y accionables.
+               Este diagnóstico se usará después como base para implementar la solución,
+               así que debe ser específico y útil, no genérico.
+
+            4. Si ya existe un comentario tuyo de diagnóstico previo en este issue (por
+               ejemplo porque el workflow corrió antes tras un `opened` y ahora corre de
+               nuevo por un `edited`), publica un nuevo comentario indicando que es una
+               revisión del diagnóstico anterior, explicando qué cambió en el issue y
+               actualizando el análisis en consecuencia. No dupliques labels ya aplicados
+               correctamente.
+
+            5. No modifiques el cuerpo del issue ni ningún archivo de código. Tu única
+               salida son labels + comentario(s).
