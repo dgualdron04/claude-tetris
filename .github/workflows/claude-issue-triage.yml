@@ -47,12 +47,17 @@ jobs:
                index.html, style.css, CLAUDE.md) para entender el problema descrito y
                publica UN comentario en español con
                `gh issue comment ${{ github.event.issue.number }} --repo ${{ github.repository }} --body "..."`
-               que incluya:
-               - Resumen del problema.
-               - Archivos y funciones del código afectadas (usa referencias tipo
-                 archivo:línea cuando puedas).
-               - Causa raíz probable.
-               - Enfoque sugerido para la solución, con pasos concretos y accionables.
+               El body debe estar en formato Markdown válido que GitHub renderice
+               correctamente (encabezados con `##`, listas con `-`, referencias a código
+               entre backticks, bloques de código con triple backtick cuando incluyas
+               fragmentos) y debe incluir estas secciones:
+               - `## Resumen` con el resumen del problema.
+               - `## Archivos afectados` con una lista de archivos y funciones del código
+                 afectadas (usa referencias tipo `archivo:línea` entre backticks cuando
+                 puedas).
+               - `## Causa raíz` con la causa raíz probable.
+               - `## Solución sugerida` con el enfoque sugerido, en pasos concretos y
+                 accionables (lista numerada).
                Este diagnóstico se usará después como base para implementar la solución,
                así que debe ser específico y útil, no genérico.
 
