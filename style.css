@@ -164,6 +164,28 @@ body.light-theme {
   border-radius: 4px;
 }
 
+/* ---- Selector de skin ---- */
+.skin-select {
+  background: var(--kbd-bg);
+  border: 1px solid var(--kbd-border);
+  color: var(--text-color);
+  border-radius: 4px;
+  padding: 6px 8px;
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.skin-select:hover {
+  border-color: var(--accent);
+}
+
+.skin-select:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
 /* ---- Controles ---- */
 .controls ul {
   list-style: none;
