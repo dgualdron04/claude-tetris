@@ -227,7 +227,8 @@ kbd {
   color: var(--accent);
 }
 
-#restart-btn {
+#restart-btn,
+#play-btn {
   margin-top: 8px;
   background: var(--accent);
   color: var(--bg);
@@ -241,6 +242,154 @@ kbd {
   transition: background 0.15s;
 }
 
-#restart-btn:hover {
+#restart-btn:hover,
+#play-btn:hover {
   opacity: 0.85;
+}
+
+#start-title {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: 6px;
+  color: var(--accent);
+}
+
+/* ---- Records / tabla de puntuaciones ---- */
+.scores-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 240px;
+}
+
+.scores-panel.hidden {
+  display: none;
+}
+
+.best-stats {
+  display: flex;
+  gap: 28px;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+.best-stats > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.best-stats .value {
+  font-size: 18px;
+}
+
+.scores-list {
+  list-style: none;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  counter-reset: rank;
+  max-height: 160px;
+  overflow-y: auto;
+}
+
+.scores-row {
+  counter-increment: rank;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  border-radius: 4px;
+  background: var(--panel-bg);
+  border: 1px solid var(--border-color);
+  font-size: 13px;
+}
+
+.scores-row::before {
+  content: counter(rank) '.';
+  color: var(--label-color);
+  margin-right: 6px;
+}
+
+.scores-row.highlight {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.scores-name {
+  color: var(--text-color);
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-right: 8px;
+}
+
+.scores-value {
+  font-family: 'Courier New', Courier, monospace;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.scores-empty {
+  font-size: 12px;
+  color: var(--control-text);
+  text-align: center;
+  padding: 8px;
+}
+
+#new-record-form {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+#new-record-form.hidden {
+  display: none;
+}
+
+#player-name-input {
+  background: var(--kbd-bg);
+  border: 1px solid var(--kbd-border);
+  border-radius: 4px;
+  padding: 8px 10px;
+  color: var(--text-color);
+  font-size: 13px;
+  width: 140px;
+}
+
+#save-score-btn {
+  background: var(--accent);
+  color: var(--bg);
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+#save-score-btn:hover {
+  opacity: 0.85;
+}
+
+.secondary-btn {
+  background: transparent;
+  color: var(--label-color);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 12px;
+  cursor: pointer;
+  margin-top: 4px;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.secondary-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent);
 }
